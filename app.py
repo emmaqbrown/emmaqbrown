@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from collections import defaultdict
 from werkzeug.middleware.proxy_fix import ProxyFix
 import logging
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 app = Flask(__name__)
 
@@ -20,7 +20,7 @@ def log_request_info():
     # This will run before every single request
     # Since we used ProxyFix, request.remote_addr is the REAL visitor IP
     app.logger.info('--- Incoming Request ---')
-    app.logger.info(f"Date and Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    app.logger.info(f"Date and Time (HKT): {datetime.now(timezone(timedelta(hours=8))).strftime('%Y-%m-%d %H:%M:%S')}")
     app.logger.info(f"Real IP: {request.remote_addr}")
     app.logger.info(f"Path: {request.path}")
     app.logger.info(f"User Agent: {request.headers.get('User-Agent')}")
